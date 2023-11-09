@@ -156,7 +156,7 @@ int main() {
   builder.SetInsertPoint(BB20);
   Value *val21 = builder.CreateLoad(builder.getInt32Ty(), val8);
   Value *val22 = builder.CreateLoad(builder.getInt32Ty(), val5);
-  Value *val23 = builder.CreateMul(val22, builder.getInt32(1), "", false, true);
+  Value *val23 = builder.CreateAdd(val22, builder.getInt32(1), "", false, true);
   Value *val24 = builder.CreateMul(val23, builder.getInt32(10), "", false, true);
   Value *val25 = builder.CreateICmp(llvm::CmpInst::Predicate::ICMP_ULT, val21, val24);
   builder.CreateCondBr(val25, BB26, BB33);
@@ -192,7 +192,7 @@ int main() {
   builder.SetInsertPoint(BB37);
   builder.CreateRetVoid();
 
-  // define dso_local void @drawGen() {
+  // define dso_local void @drawGen() local_unnamed_addr #0 {
   ArrayRef<Type *> drawGenParamTypes = {Type::getInt32PtrTy(context)};
   FunctionType *drawGenFuncType = FunctionType::get(voidType, drawGenParamTypes, false);
   Function *drawGenFunc =
@@ -276,7 +276,7 @@ int main() {
   builder.SetInsertPoint(BB32);
   builder.CreateRetVoid();
 
-  // define dso_local void @calcGen(){
+  // define dso_local void @app() local_unnamed_addr #0 {
   ArrayRef<Type *> calcGenParamTypes = {Type::getInt32PtrTy(context), Type::getInt32PtrTy(context)};
   FunctionType *calcGenFuncType = FunctionType::get(voidType, calcGenParamTypes, false);
   Function *calcGenFunc =
@@ -534,9 +534,7 @@ int main() {
   builder.SetInsertPoint(BB122);
   builder.CreateRetVoid();
 
-
-
-  // define dso_local void @app() {
+  // define dso_local void @app() local_unnamed_addr #0 {
   FunctionType *appFuncType = FunctionType::get(builder.getInt32Ty(), false);
   Function *appFunc =
       Function::Create(appFuncType, Function::ExternalLinkage, "app", module);

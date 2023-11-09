@@ -40,7 +40,7 @@ define dso_local void @draw_shape(i32 %0, i32 %1, i32 %2) {
 20:                                               ; preds = %30, %17
   %21 = load i32, i32* %8, align 4
   %22 = load i32, i32* %5, align 4
-  %23 = mul nsw i32 %22, 1
+  %23 = add nsw i32 %22, 1
   %24 = mul nsw i32 %23, 10
   %25 = icmp ult i32 %21, %24
   br i1 %25, label %26, label %33
