@@ -15,7 +15,8 @@ struct MyPass : public FunctionPass {
   MyPass() : FunctionPass(ID) {}
 
   bool isFuncLogger(StringRef name) {
-    return name == "instLogger";
+    return name == "binOptLogger" || name == "callLogger" ||
+           name == "funcStartLogger" || name == "funcEndLogger" || name == "instLogger";
   }
 
   virtual bool runOnFunction(Function &F) {
@@ -39,6 +40,18 @@ struct MyPass : public FunctionPass {
     LLVMContext &Ctx = F.getContext();
     IRBuilder<> builder(Ctx);
     Type *retType = Type::getVoidTy(Ctx);
+
+    // Prepare binOptLogger function
+    ArrayRef<Type *> binOptParamTypes = {Type::getInt32Ty(Ctx),
+                                            Type::getInt32Ty(Ctx),
+                                            Type::getInt32Ty(Ctx),
+                                            builder.getInt8Ty()->getPointerTo(),
+                                            builder.getInt8Ty()->getPointerTo(),
+                                            Type::getInt64Ty(Ctx)};
+    FunctionType *binOptLogFuncType =
+        FunctionType::get(retType, binOptParamTypes, false);
+    FunctionCallee binOptLogFunc =
+        F.getParent()->getOrInsertFunction("binOptLogger", binOptLogFuncType);
 
     // Prepare instLogger function
     ArrayRef<Type *> instParamTypes = {builder.getInt8Ty()->getPointerTo()};
@@ -66,6 +79,9 @@ struct MyPass : public FunctionPass {
             builder.CreateCall(instLogFunc, args);
           }
         } else {
+          if (auto *phi = dyn_cast<PHINode>(&I)) {
+            continue;
+          }
           auto *inst = dyn_cast<Instruction>(&I);
           // Insert before call
           builder.SetInsertPoint(inst);
@@ -91,5 +107,5 @@ static void registerMyPass(const PassManagerBuilder &,
   PM.add(new MyPass());
 }
 static RegisterStandardPasses
-    RegisterMyPass(PassManagerBuilder::EP_EarlyAsPossible,
+    RegisterMyPass(PassManagerBuilder::EP_VectorizerStart,
                    registerMyPass);

@@ -2,7 +2,7 @@ one_inst_cnt = dict()
 two_inst_cnt = dict()
 three_inst_cnt = dict()
 
-with open('highway.txt') as file:
+with open('trace.txt') as file:
     lines = [line.rstrip() for line in file]
 
 for i in range(len(lines) - 2):
@@ -32,5 +32,5 @@ data = [one_inst_result, two_inst_result, three_inst_result]
 for j in range(3):
     current = data[j]
     print(j + 1)
-    for i in range(10):
+    for i in range(15):
         print(current[i][0] + ": " + str(current[i][1] * 100 / len(lines)) + "%")
