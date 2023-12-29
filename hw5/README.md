@@ -8,28 +8,28 @@ Variables are declared in a special section and only in it. This section should 
 
 ### Example of a section:
 
-def {
-    a = 0;
-    b = 1;
+def {/
+    a = 0;/
+    b = 1;/
 }
 
 All variables are of type uint32.
 
 ## For
-for var in [exp1, exp2] {
-  ...
+for var in [exp1, exp2] {/
+  .../
 }
 
 ## While
-while (exp) {
-  ... 
+while (exp) {/
+  ... /
 }
 
 ## If
-if (exp) {
-  ... 
-} else {
-  ...
+if (exp) {/
+  ... /
+} else {/
+  .../
 }
 
 ## Expression
@@ -39,12 +39,12 @@ if (exp) {
 3. !=
 4. ==
 5. <=
-6. >=
-7. >
-8. <
-9. +
-10. -
-11. *
+6. />=
+7. />
+8. /<
+9. /+
+10. /-
+11. /*
 12. /
 13. %
 
