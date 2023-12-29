@@ -9,27 +9,27 @@ Variables are declared in a special section and only in it. This section should 
 ### Example of a section:
 
 def {\
-    a = 0;\
-    b = 1;\
+&ensp;a = 0;\
+&ensp;b = 1;\
 }
 
 All variables are of type uint32.
 
 ## For
 for var in [exp1, exp2] {\
-  ...\
+&ensp;...\
 }
 
 ## While
 while (exp) {\
-  ... \
+&ensp;... \
 }
 
 ## If
 if (exp) {\
-  ... \
+&ensp;... \
 } else {\
-  ...\
+&ensp;...\
 }
 
 ## Expression
@@ -62,7 +62,7 @@ The following two graphical functions are available:
 ## Function
 ### The function declaration has the following syntax:
 func name(arg1, arg2, ..., argn) {
-    ...
+&ensp;...
 }
 
 ### Calling a function
