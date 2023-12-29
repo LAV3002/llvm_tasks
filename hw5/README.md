@@ -70,4 +70,6 @@ call name(arg1, arg2, ..., argn)
 
 All the arguments are expressions.
 
+## Entry point
+
 The entry point is a function main()
