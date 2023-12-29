@@ -1,0 +1,103 @@
+def {
+  GEN_SIZE = 50;
+  BLOCK_SIZE = 10;
+  WINDOW_WIDTH = 500;
+  REPEAT_SIZE = 100;
+  genf[2500] = 0;
+  gens[2500] = 0;
+}
+
+func draw_shape(x, y, argb) {
+    def {
+      i = 0;
+      j = 0;
+    }
+    for i in [x * BLOCK_SIZE, (x + 1) * BLOCK_SIZE] {
+        for j in [y * BLOCK_SIZE, (y + 1) * BLOCK_SIZE] {
+            PUT(i, j, argb);
+        }
+    }
+}
+
+func drawGen() {
+    def {
+      x = 0;
+      y = 0;
+    }
+    x = 0;
+    for y in [0, GEN_SIZE] {
+      for x in [0, GEN_SIZE] {
+        call draw_shape(x, y, 4278190080 + 65280 * genf[y * 50 + x]);
+      }
+    }
+}
+
+func calcGen() {
+    def {
+      x = 0;
+      y = 0;
+      dx = 0;
+      dy = 0;
+      cnt = 0;
+    }
+    for y in [0, GEN_SIZE] {
+        for x in [0, GEN_SIZE] {
+            cnt = 0;
+            for dx in [-1, 2] {
+                for dy in [-1, 2] {
+                    cnt = cnt + gens[((y + dy + GEN_SIZE) % GEN_SIZE) * GEN_SIZE + ((x + dx + GEN_SIZE) % GEN_SIZE)];
+                }
+            }
+            cnt = cnt - gens[y * GEN_SIZE + x];
+            if (gens[y * GEN_SIZE + x]) {
+                if (cnt == 2 || cnt == 3) {
+                    genf[y * GEN_SIZE + x] = 1;
+                }
+                else {
+                    genf[y * GEN_SIZE + x] = 0;
+                }
+            }
+            else {
+                if (cnt == 3) {
+                    genf[y * GEN_SIZE + x] = 1;
+                }
+                else {
+                    genf[y * GEN_SIZE + x] = 0;
+                }
+            }
+        }
+    }
+}
+
+func swap() {
+  def {
+    swaper = 0;
+    i = 0;
+  }
+  for i in [0, GEN_SIZE * GEN_SIZE] {
+    swaper = genf[i];
+    genf[i] = gens[i];
+    gens[i] = swaper;
+  }
+}
+
+func main() {
+    def {
+      x = 0;
+      y = 0;
+      i = 0;
+    }
+
+    for x in [0, GEN_SIZE] {
+        for y in [0, GEN_SIZE] {
+            gens[y * GEN_SIZE + x] = (RAND % 6) == 0;
+        }
+    }
+
+    for i in [0, REPEAT_SIZE] {
+        call calcGen();
+        call drawGen();
+        call swap();
+        FLUSH;
+    }
+}
